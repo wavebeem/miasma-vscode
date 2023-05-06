@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true,
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "ES2018",
+    "outDir": "build",
+    "incremental": true
+  },
+  "files": ["src/main.ts"],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
