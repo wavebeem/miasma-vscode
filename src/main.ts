@@ -159,7 +159,7 @@ function themeNotifications(): ThemeUIColors {
 
 function themeList(): ThemeUIColors {
   return {
-    "quickInput.background": ui.bg0,
+    "quickInput.background": ui.bg1,
 
     "list.errorForeground": terminal.red,
     "list.warningForeground": terminal.yellow,
@@ -296,9 +296,10 @@ function themeBadge(): ThemeUIColors {
 
 function themeMenu(): ThemeUIColors {
   return {
-    "menu.background": ui.bg0,
+    "menu.background": ui.bg1,
     "menu.foreground": ui.fg,
-    "menu.separatorBackground": alpha(ui.border0, 50),
+    "menu.separatorBackground": ui.border0,
+    "menu.border": ui.border1,
   };
 }
 
@@ -408,7 +409,7 @@ function themeEditor(): ThemeUIColors {
   return {
     "editorWidget.foreground": ui.fg,
     "editorWidget.background": ui.bg0,
-    "editorWidget.border": ui.border0,
+    "editorWidget.border": ui.border1,
     "editorWidget.resizeBorder": ui.border1,
     "editorBracketMatch.background": alpha(syntax.due2, 15),
     "editorBracketMatch.border": alpha(syntax.due2, 50),
@@ -492,7 +493,7 @@ function colors(): ThemeUIColors {
     "icon.foreground": ui.fg,
     "toolbar.hoverBackground": alpha(ui.border1, 30),
     "toolbar.activeBackground": alpha(ui.border1, 50),
-    "widget.border": ui.border0,
+    "widget.border": ui.border1,
     "widget.shadow": ui.bg1,
     ...themeScrollbar(),
     "input.border": ui.border1,
