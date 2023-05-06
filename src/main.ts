@@ -1085,6 +1085,41 @@ function printContrastReport(): void {
   showContrast("decoration", ui.border0, ui.bg1, "ui.border0", "ui.bg1");
   showContrast("ui", ui.border1, ui.bg0, "ui.border1", "ui.bg0");
   showContrast("ui", ui.border1, ui.bg1, "ui.border1", "ui.bg1");
+  showContrast(
+    "decoration",
+    syntax.uno0,
+    syntax.uno1,
+    "syntax.uno0",
+    "syntax.uno1"
+  );
+  showContrast(
+    "decoration",
+    syntax.due0,
+    syntax.due1,
+    "syntax.due0",
+    "syntax.due1"
+  );
+  showContrast(
+    "decoration",
+    syntax.due1,
+    syntax.due2,
+    "syntax.due1",
+    "syntax.due2"
+  );
+  showContrast(
+    "decoration",
+    syntax.tre0,
+    syntax.tre1,
+    "syntax.tre0",
+    "syntax.tre1"
+  );
+  showContrast(
+    "decoration",
+    syntax.tre1,
+    syntax.tre2,
+    "syntax.tre1",
+    "syntax.tre2"
+  );
   for (const [name, color] of Object.entries(syntax)) {
     showContrast("text", color, ui.bg0, `syntax.${name}`, "ui.bg0");
   }
