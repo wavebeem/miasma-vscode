@@ -2,7 +2,7 @@
 
 ![](img/icon.png)
 
-wavebeem's personal theme.
+wavebeem's toxic green color theme
 
 # License
 
