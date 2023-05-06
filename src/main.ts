@@ -77,7 +77,6 @@ const syntax = {
 
   uno0: hsl(hue.uno, 50, 73),
   uno1: hsl(hue.uno, 60, 49),
-  uno2: hsl(hue.uno, 30, 46.5),
 
   due0: hsl(hue.due, 100, 82),
   due1: hsl(hue.due, 90, 70.5),
@@ -568,7 +567,6 @@ function tokenColors(): TokenColor[] {
 
     uno0: createToken(syntax.uno0),
     uno1: createToken(syntax.uno1),
-    uno2: createToken(syntax.uno2),
 
     due0: createToken(syntax.due0),
     due1: createToken(syntax.due1),
