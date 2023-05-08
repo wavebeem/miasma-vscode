@@ -13,7 +13,7 @@ const Contrast = {
   text: 4.5,
   ui: 3,
   // Not a WCAG value
-  decoration: 1,
+  decoration: 1.3,
 } as const;
 type ContrastLevel = keyof typeof Contrast;
 
@@ -49,62 +49,64 @@ interface TokenColor {
 const hue = {
   main: 170,
   uno: 100,
-  due: 66,
+  due: 65,
   tre: 330,
 } as const;
 
 const ui = {
   bg0: lch(18, 14, hue.main),
-  bg1: lch(12, 11, hue.main),
-  fg: lch(88, 24, hue.main),
-  border0: lch(33, 21, hue.main),
-  border1: lch(54, 32, hue.main),
+  bg1: lch(12, 14, hue.main),
+
+  fg: lch(90, 20, hue.main),
+
+  border0: lch(30, 20, hue.main),
+  border1: lch(55, 30, hue.main),
 
   bracket1: lch(65, 48, hue.uno),
   bracket2: lch(65, 32, hue.due),
-  bracket3: lch(64, 31, hue.tre),
+  bracket3: lch(65, 31, hue.tre),
 
   error: lch(59, 84, 33),
 } as const;
 
 const syntax = {
-  default: lch(88, 24, hue.main),
-  alt0: lch(66, 12, hue.main),
-  alt1: lch(61, 36, hue.main),
+  default: ui.fg,
+  alt0: lch(61, 14, hue.main),
+  alt1: lch(61, 40, hue.main),
 
-  uno0: lch(87, 35, hue.uno),
-  uno1: lch(79, 70, hue.uno),
+  uno0: lch(90, 30, hue.uno),
+  uno1: lch(80, 60, hue.uno),
 
-  due0: lch(87, 32, hue.due),
-  due1: lch(79, 49, hue.due),
-  due2: lch(69, 65, hue.due),
+  due0: lch(90, 30, hue.due),
+  due1: lch(80, 50, hue.due),
+  due2: lch(70, 60, hue.due),
 
-  tre0: lch(87, 29, hue.tre),
-  tre1: lch(79, 45, hue.tre),
-  tre2: lch(68, 56, hue.tre),
+  tre0: lch(90, 30, hue.tre),
+  tre1: lch(80, 50, hue.tre),
+  tre2: lch(70, 60, hue.tre),
 } as const;
 
 const terminal = {
-  black: lch(35, 21, hue.main),
-  red: lch(64, 46, 1),
-  green: lch(83, 39, hue.main),
-  yellow: lch(90, 36, hue.uno),
-  blue: lch(64, 43, 273),
-  magenta: lch(75, 36, hue.tre),
-  cyan: lch(84, 33, 197),
-  white: lch(94, 11, hue.due),
+  black: lch(35, 30, hue.main),
+  red: lch(70, 60, 0),
+  green: lch(70, 60, hue.main),
+  yellow: lch(70, 60, hue.due),
+  blue: lch(70, 60, 270),
+  magenta: lch(70, 60, hue.tre),
+  cyan: lch(70, 60, 200),
+  white: lch(94, 15, hue.uno),
 } as const;
 
 const diff = {
-  red: lch(32, 59, 18),
-  blue: lch(25, 64, 289),
+  red: lch(30, 60, 20),
+  blue: lch(30, 60, 290),
 } as const;
 
 const bg = {
-  orange: lch(49, 67, 59),
-  yellow: lch(71, 73, 100),
-  blue: lch(56, 40, 273),
-  purple: lch(49, 56, 333),
+  orange: lch(40, 65, hue.due),
+  yellow: lch(40, 65, hue.uno),
+  blue: lch(40, 65, 270),
+  purple: lch(40, 65, 330),
 } as const;
 
 function lch(l: number, c: number, h: number): string {
@@ -163,7 +165,7 @@ function themeNotifications(): ThemeUIColors {
 
 function themeList(): ThemeUIColors {
   return {
-    "quickInput.background": ui.bg0,
+    "quickInput.background": ui.bg1,
 
     "list.errorForeground": terminal.red,
     "list.warningForeground": terminal.yellow,
@@ -420,7 +422,7 @@ function themeEditor(): ThemeUIColors {
     "editor.foldBackground": transparent,
     "editorLink.activeForeground": terminal.blue,
     "editor.lineHighlightBackground": ui.bg1,
-    "editor.rangeHighlightBackground": alpha(bg.yellow, 10),
+    "editor.rangeHighlightBackground": alpha(bg.yellow, 50),
     "editor.selectionBackground": alpha(syntax.due2, 30),
     "editor.inactiveSelectionBackground": alpha(syntax.due2, 30),
     "editor.wordHighlightBackground": alpha(bg.blue, 50),
@@ -430,8 +432,8 @@ function themeEditor(): ThemeUIColors {
     "editorGroup.border": ui.border0,
     "editorIndentGuide.background": alpha(ui.border0, 50),
     "editorIndentGuide.activeBackground": ui.border0,
-    "editorLineNumber.foreground": alpha(syntax.alt1, 50),
-    "editorLineNumber.activeForeground": syntax.default,
+    "editorLineNumber.foreground": ui.border0,
+    "editorLineNumber.activeForeground": ui.border1,
 
     "editorCodeLens.foreground": syntax.alt0,
     "editorLightBulb.foreground": syntax.uno1,
@@ -1083,6 +1085,41 @@ function printContrastReport(): void {
   showContrast("text", ui.fg, ui.bg1, "ui.fg", "ui.bg1");
   showContrast("decoration", ui.border0, ui.bg0, "ui.border0", "ui.bg0");
   showContrast("decoration", ui.border0, ui.bg1, "ui.border0", "ui.bg1");
+  showContrast(
+    "decoration",
+    syntax.uno0,
+    syntax.uno1,
+    "syntax.uno0",
+    "syntax.uno1"
+  );
+  showContrast(
+    "decoration",
+    syntax.tre0,
+    syntax.tre1,
+    "syntax.due0",
+    "syntax.due1"
+  );
+  showContrast(
+    "decoration",
+    syntax.due1,
+    syntax.due2,
+    "syntax.due1",
+    "syntax.due2"
+  );
+  showContrast(
+    "decoration",
+    syntax.tre0,
+    syntax.tre1,
+    "syntax.tre0",
+    "syntax.tre1"
+  );
+  showContrast(
+    "decoration",
+    syntax.tre1,
+    syntax.tre2,
+    "syntax.tre1",
+    "syntax.tre2"
+  );
   showContrast("ui", ui.border1, ui.bg0, "ui.border1", "ui.bg0");
   showContrast("ui", ui.border1, ui.bg1, "ui.border1", "ui.bg1");
   for (const [name, color] of Object.entries(syntax)) {
