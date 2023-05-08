@@ -13,7 +13,7 @@ const Contrast = {
   text: 4.5,
   ui: 3,
   // Not a WCAG value
-  decoration: 1.3,
+  decoration: 1.25,
 } as const;
 type ContrastLevel = keyof typeof Contrast;
 
@@ -60,7 +60,7 @@ const ui = {
   fg: lch(90, 20, hue.main),
 
   border0: lch(30, 20, hue.main),
-  border1: lch(55, 30, hue.main),
+  border1: lch(50, 30, hue.main),
 
   bracket1: lch(65, 48, hue.uno),
   bracket2: lch(65, 32, hue.due),
@@ -302,9 +302,10 @@ function themeBadge(): ThemeUIColors {
 
 function themeMenu(): ThemeUIColors {
   return {
-    "menu.background": ui.bg0,
+    "menu.background": ui.bg1,
     "menu.foreground": ui.fg,
-    "menu.separatorBackground": alpha(ui.border0, 50),
+    "menu.separatorBackground": ui.border0,
+    "menu.border": ui.border1,
   };
 }
 
@@ -410,7 +411,7 @@ function themeEditor(): ThemeUIColors {
   return {
     "editorWidget.foreground": ui.fg,
     "editorWidget.background": ui.bg0,
-    "editorWidget.border": ui.border0,
+    "editorWidget.border": ui.border1,
     "editorWidget.resizeBorder": ui.border1,
     "editorBracketMatch.background": alpha(syntax.due2, 15),
     "editorBracketMatch.border": alpha(syntax.due2, 50),
@@ -494,7 +495,7 @@ function colors(): ThemeUIColors {
     "icon.foreground": ui.fg,
     "toolbar.hoverBackground": alpha(ui.border1, 30),
     "toolbar.activeBackground": alpha(ui.border1, 50),
-    "widget.border": ui.border0,
+    "widget.border": ui.border1,
     "widget.shadow": ui.bg1,
     ...themeScrollbar(),
     "input.border": ui.border1,
@@ -1122,6 +1123,41 @@ function printContrastReport(): void {
   );
   showContrast("ui", ui.border1, ui.bg0, "ui.border1", "ui.bg0");
   showContrast("ui", ui.border1, ui.bg1, "ui.border1", "ui.bg1");
+  showContrast(
+    "decoration",
+    syntax.uno0,
+    syntax.uno1,
+    "syntax.uno0",
+    "syntax.uno1"
+  );
+  showContrast(
+    "decoration",
+    syntax.due0,
+    syntax.due1,
+    "syntax.due0",
+    "syntax.due1"
+  );
+  showContrast(
+    "decoration",
+    syntax.due1,
+    syntax.due2,
+    "syntax.due1",
+    "syntax.due2"
+  );
+  showContrast(
+    "decoration",
+    syntax.tre0,
+    syntax.tre1,
+    "syntax.tre0",
+    "syntax.tre1"
+  );
+  showContrast(
+    "decoration",
+    syntax.tre1,
+    syntax.tre2,
+    "syntax.tre1",
+    "syntax.tre2"
+  );
   for (const [name, color] of Object.entries(syntax)) {
     showContrast("text", color, ui.bg0, `syntax.${name}`, "ui.bg0");
   }
