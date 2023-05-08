@@ -47,73 +47,77 @@ interface TokenColor {
 }
 
 const hue = {
-  bg: 160,
-  uno: 60,
-  due: 30,
-  tre: 310,
+  main: 170,
+  uno: 100,
+  due: 66,
+  tre: 330,
 } as const;
 
 const ui = {
-  bg0: hsl(hue.bg, 40, 14),
-  bg1: hsl(hue.bg, 40, 10),
+  bg0: lch(18, 14, hue.main),
+  bg1: lch(12, 11, hue.main),
+  fg: lch(88, 24, hue.main),
+  border0: lch(33, 21, hue.main),
+  border1: lch(54, 32, hue.main),
 
-  fg: hsl(hue.bg, 60, 80),
+  bracket1: lch(65, 48, hue.uno),
+  bracket2: lch(65, 32, hue.due),
+  bracket3: lch(64, 31, hue.tre),
 
-  border0: hsl(hue.bg, 40, 24),
-  border1: hsl(hue.bg, 40, 40),
-
-  bracket1: hsl(hue.uno, 40, 45),
-  bracket2: hsl(hue.due, 40, 58),
-  bracket3: hsl(hue.tre, 30, 65),
-
-  error: "#ff4444",
-} as const;
+  error: lch(59, 84, 33),
+};
 
 const syntax = {
-  default: ui.fg,
+  default: lch(88, 24, hue.main),
+  alt0: lch(66, 12, hue.main),
+  alt1: lch(61, 36, hue.main),
 
-  alt0: hsl(hue.bg, 15, 60),
-  alt1: hsl(hue.bg, 40, 46),
+  uno0: lch(87, 35, hue.uno),
+  uno1: lch(79, 70, hue.uno),
 
-  uno0: hsl(hue.uno, 50, 73),
-  uno1: hsl(hue.uno, 60, 49),
+  due0: lch(87, 32, hue.due),
+  due1: lch(79, 49, hue.due),
+  due2: lch(69, 65, hue.due),
 
-  due0: hsl(hue.due, 100, 82),
-  due1: hsl(hue.due, 90, 70.5),
-  due2: hsl(hue.due, 80, 57),
-
-  tre0: hsl(hue.tre, 100, 89.5),
-  tre1: hsl(hue.tre, 90, 81.75),
-  tre2: hsl(hue.tre, 70, 71),
-} as const;
+  tre0: lch(87, 29, hue.tre),
+  tre1: lch(79, 45, hue.tre),
+  tre2: lch(68, 56, hue.tre),
+};
 
 const terminal = {
-  black: hsl(hue.bg, 35, 26),
-  red: hsl(340, 67, 68),
-  green: hsl(hue.bg, 64, 68),
-  yellow: hsl(hue.uno, 58, 76),
-  blue: hsl(220, 71, 69),
-  magenta: hsl(hue.tre, 56, 77),
-  cyan: hsl(180, 64, 68),
-  white: hsl(hue.due, 80, 92),
-} as const;
+  black: lch(35, 21, hue.main),
+  red: lch(64, 46, 1),
+  green: lch(83, 39, hue.main),
+  yellow: lch(90, 36, hue.uno),
+  blue: lch(64, 43, 273),
+  magenta: lch(75, 36, hue.tre),
+  cyan: lch(84, 33, 197),
+  white: lch(94, 11, hue.due),
+};
 
 const diff = {
-  red: hsl(340, 100, 30),
-  blue: hsl(220, 100, 30),
-} as const;
+  red: lch(32, 59, 18),
+  blue: lch(25, 64, 289),
+};
 
-function hsl(h: number, s: number, l: number): string {
-  return colord({ h, s, l }).toHex();
+const bg = {
+  orange: lch(49, 67, 59),
+  yellow: lch(71, 73, 100),
+  blue: lch(56, 40, 273),
+  purple: lch(49, 56, 333),
+};
+
+function lch(l: number, c: number, h: number): string {
+  return colord({ l, c, h }).toHex();
 }
 
 function alpha(color: string, percent: number): string {
   if (percent >= 100) {
     return color;
   }
-  const hsl = colord(color).toHsl();
-  hsl.a = percent / 100;
-  return colord(hsl).toHex();
+  const rgb = colord(color).toRgb();
+  rgb.a = percent / 100;
+  return colord(rgb).toHex();
 }
 
 function config(): {
@@ -401,10 +405,6 @@ function themePeekView(): ThemeUIColors {
 }
 
 function themeEditor(): ThemeUIColors {
-  const orange = hsl(30, 100, 35);
-  const yellow = hsl(60, 100, 35);
-  const blue = hsl(220, 50, 60);
-  const purple = hsl(310, 40, 50);
   return {
     "editorWidget.foreground": ui.fg,
     "editorWidget.background": ui.bg0,
@@ -412,19 +412,19 @@ function themeEditor(): ThemeUIColors {
     "editorWidget.resizeBorder": ui.border1,
     "editorBracketMatch.background": alpha(syntax.due2, 15),
     "editorBracketMatch.border": alpha(syntax.due2, 50),
-    "editor.findMatchBackground": alpha(orange, 50),
-    "editor.findMatchHighlightBackground": alpha(orange, 50),
-    "editor.findRangeHighlightBackground": alpha(yellow, 50),
+    "editor.findMatchBackground": alpha(bg.orange, 50),
+    "editor.findMatchHighlightBackground": alpha(bg.orange, 50),
+    "editor.findRangeHighlightBackground": alpha(bg.yellow, 50),
     "editor.foreground": ui.fg,
     "editor.background": ui.bg0,
     "editor.foldBackground": transparent,
     "editorLink.activeForeground": terminal.blue,
     "editor.lineHighlightBackground": ui.bg1,
-    "editor.rangeHighlightBackground": alpha(yellow, 10),
+    "editor.rangeHighlightBackground": alpha(bg.yellow, 10),
     "editor.selectionBackground": alpha(syntax.due2, 30),
     "editor.inactiveSelectionBackground": alpha(syntax.due2, 30),
-    "editor.wordHighlightBackground": alpha(blue, 50),
-    "editor.wordHighlightStrongBackground": alpha(purple, 50),
+    "editor.wordHighlightBackground": alpha(bg.blue, 50),
+    "editor.wordHighlightStrongBackground": alpha(bg.purple, 50),
     "editorOverviewRuler.border": alpha(ui.border0, 25),
     "editorCursor.foreground": syntax.tre1,
     "editorGroup.border": ui.border0,
@@ -1059,9 +1059,9 @@ function showContrast(
   const str = [
     fail ? "[!]" : "   ",
     ANSI.bold.yellow(contrast.toFixed(1).toString().padStart(4)),
-    ANSI.bold.magenta(" :: "),
+    ANSI.bold.magenta("::"),
     bgStr,
-    ANSI.bold.magenta(" <- "),
+    ANSI.bold.magenta("<-"),
     fgStr,
   ].join(" ");
   if (fail) {
