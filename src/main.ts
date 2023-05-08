@@ -88,7 +88,7 @@ const syntax = {
 
 const terminal = {
   black: lch(35, 30, hue.main),
-  red: lch(70, 60, 0),
+  red: lch(70, 60, 20),
   green: lch(70, 60, hue.main),
   yellow: lch(70, 60, hue.due),
   blue: lch(70, 60, 270),
@@ -99,7 +99,7 @@ const terminal = {
 
 const diff = {
   red: lch(30, 60, 20),
-  blue: lch(30, 60, 290),
+  blue: lch(30, 60, 270),
 } as const;
 
 const bg = {
@@ -114,9 +114,6 @@ function lch(l: number, c: number, h: number): string {
 }
 
 function alpha(color: string, percent: number): string {
-  if (percent >= 100) {
-    return color;
-  }
   const rgb = colord(color).toRgb();
   rgb.a = percent / 100;
   return colord(rgb).toHex();
@@ -607,7 +604,6 @@ function tokenColors(): TokenColor[] {
     },
     {
       scope: ["comment", "punctuation.definition.comment"],
-      // TODO: Maybe a nicer color for comments?
       settings: tokens.alt0,
     },
     {
