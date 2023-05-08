@@ -65,7 +65,7 @@ const ui = {
   bracket3: lch(64, 31, hue.tre),
 
   error: lch(59, 84, 33),
-};
+} as const;
 
 const syntax = {
   default: lch(88, 24, hue.main),
@@ -82,7 +82,7 @@ const syntax = {
   tre0: lch(87, 29, hue.tre),
   tre1: lch(79, 45, hue.tre),
   tre2: lch(68, 56, hue.tre),
-};
+} as const;
 
 const terminal = {
   black: lch(35, 21, hue.main),
@@ -93,19 +93,19 @@ const terminal = {
   magenta: lch(75, 36, hue.tre),
   cyan: lch(84, 33, 197),
   white: lch(94, 11, hue.due),
-};
+} as const;
 
 const diff = {
   red: lch(32, 59, 18),
   blue: lch(25, 64, 289),
-};
+} as const;
 
 const bg = {
   orange: lch(49, 67, 59),
   yellow: lch(71, 73, 100),
   blue: lch(56, 40, 273),
   purple: lch(49, 56, 333),
-};
+} as const;
 
 function lch(l: number, c: number, h: number): string {
   return colord({ l, c, h }).toHex();
