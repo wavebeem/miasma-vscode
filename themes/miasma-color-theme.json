@@ -220,7 +220,7 @@
     "toolbar.activeBackground": "#37846d80",
     "toolbar.hoverBackground": "#37846d4d",
     "tree.indentGuidesStroke": "#204f4180",
-    "widget.border": "#37846d",
+    "widget.border": "#204f41",
     "widget.shadow": "#06241c"
   },
   "tokenColors": [

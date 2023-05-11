@@ -492,7 +492,7 @@ function colors(): ThemeUIColors {
     "icon.foreground": ui.fg,
     "toolbar.hoverBackground": alpha(ui.border1, 30),
     "toolbar.activeBackground": alpha(ui.border1, 50),
-    "widget.border": ui.border1,
+    "widget.border": ui.border0,
     "widget.shadow": ui.bg1,
     ...themeScrollbar(),
     "input.border": ui.border1,
