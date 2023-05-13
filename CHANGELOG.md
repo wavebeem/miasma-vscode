@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.1.0
+## v0.1.0 (2023-05-13)
 
 - Tweaked almost every color
 - Increased contrast of some UI elements
