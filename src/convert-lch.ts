@@ -1,5 +1,4 @@
-import "./colord";
-import { colord } from "colord";
+import { colord } from "./colord";
 
 export function letsGoLCH(objName: string, obj: Record<string, string>): void {
   function round(n: number): number {
