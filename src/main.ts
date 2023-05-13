@@ -1,7 +1,6 @@
 // https://code.visualstudio.com/api/references/theme-color
-import "./extend-colord";
 import fs from "fs";
-import { colord } from "colord";
+import { colord } from "./colord";
 import * as ANSI from "ansi-colors";
 import { ThemeUIColors } from "./types";
 
@@ -13,7 +12,7 @@ const Contrast = {
   text: 4.5,
   ui: 3,
   // Not a WCAG value
-  decoration: 1,
+  decoration: 1.25,
 } as const;
 type ContrastLevel = keyof typeof Contrast;
 
@@ -47,73 +46,76 @@ interface TokenColor {
 }
 
 const hue = {
-  bg: 160,
-  uno: 60,
-  due: 30,
-  tre: 310,
+  main: 170,
+  uno: 100,
+  due: 65,
+  tre: 330,
+} as const;
+
+const terminal = {
+  black: lch(35, 30, hue.main),
+  red: lch(70, 60, 20),
+  green: lch(70, 60, hue.main),
+  yellow: lch(70, 60, hue.due),
+  blue: lch(70, 60, 270),
+  magenta: lch(70, 60, hue.tre),
+  cyan: lch(70, 60, 200),
+  white: lch(94, 15, hue.uno),
 } as const;
 
 const ui = {
-  bg0: hsl(hue.bg, 40, 14),
-  bg1: hsl(hue.bg, 40, 10),
+  bg0: lch(18, 14, hue.main),
+  bg1: lch(12, 14, hue.main),
 
-  fg: hsl(hue.bg, 60, 80),
+  fg: lch(90, 20, hue.main),
 
-  border0: hsl(hue.bg, 40, 24),
-  border1: hsl(hue.bg, 40, 40),
+  border0: lch(30, 20, hue.main),
+  border1: lch(50, 30, hue.main),
 
-  bracket1: hsl(hue.uno, 40, 45),
-  bracket2: hsl(hue.due, 40, 58),
-  bracket3: hsl(hue.tre, 30, 65),
+  bracket1: lch(65, 48, hue.uno),
+  bracket2: lch(65, 32, hue.due),
+  bracket3: lch(65, 31, hue.tre),
 
-  error: "#ff4444",
+  error: terminal.red,
 } as const;
 
 const syntax = {
   default: ui.fg,
+  alt0: lch(61, 14, hue.main),
+  alt1: lch(61, 40, hue.main),
 
-  alt0: hsl(hue.bg, 15, 60),
-  alt1: hsl(hue.bg, 40, 46),
+  uno0: lch(90, 30, hue.uno),
+  uno1: lch(80, 60, hue.uno),
 
-  uno0: hsl(hue.uno, 50, 73),
-  uno1: hsl(hue.uno, 60, 49),
+  due0: lch(90, 30, hue.due),
+  due1: lch(80, 50, hue.due),
+  due2: lch(70, 60, hue.due),
 
-  due0: hsl(hue.due, 100, 82),
-  due1: hsl(hue.due, 90, 70.5),
-  due2: hsl(hue.due, 80, 57),
-
-  tre0: hsl(hue.tre, 100, 89.5),
-  tre1: hsl(hue.tre, 90, 81.75),
-  tre2: hsl(hue.tre, 70, 71),
-} as const;
-
-const terminal = {
-  black: hsl(hue.bg, 35, 26),
-  red: hsl(340, 67, 68),
-  green: hsl(hue.bg, 64, 68),
-  yellow: hsl(hue.uno, 58, 76),
-  blue: hsl(220, 71, 69),
-  magenta: hsl(hue.tre, 56, 77),
-  cyan: hsl(180, 64, 68),
-  white: hsl(hue.due, 80, 92),
+  tre0: lch(90, 30, hue.tre),
+  tre1: lch(80, 50, hue.tre),
+  tre2: lch(70, 60, hue.tre),
 } as const;
 
 const diff = {
-  red: hsl(340, 100, 30),
-  blue: hsl(220, 100, 30),
+  red: lch(30, 60, 20),
+  blue: lch(30, 60, 270),
 } as const;
 
-function hsl(h: number, s: number, l: number): string {
-  return colord({ h, s, l }).toHex();
+const bg = {
+  orange: lch(40, 65, hue.due),
+  yellow: lch(40, 65, hue.uno),
+  blue: lch(40, 65, 270),
+  purple: lch(40, 65, 330),
+} as const;
+
+function lch(l: number, c: number, h: number): string {
+  return colord({ l, c, h }).toHex();
 }
 
 function alpha(color: string, percent: number): string {
-  if (percent >= 100) {
-    return color;
-  }
-  const hsl = colord(color).toHsl();
-  hsl.a = percent / 100;
-  return colord(hsl).toHex();
+  const rgb = colord(color).toRgb();
+  rgb.a = percent / 100;
+  return colord(rgb).toHex();
 }
 
 function config(): {
@@ -140,7 +142,7 @@ function themeActivityBar(): ThemeUIColors {
     "activityBarBadge.background": syntax.due1,
     "activityBarBadge.foreground": ui.bg0,
     "activityBar.activeBorder": syntax.tre2,
-    "activityBar.activeBackground": alpha(ui.border1, 0),
+    "activityBar.activeBackground": transparent,
   };
 }
 
@@ -209,7 +211,7 @@ function themeSettings(): ThemeUIColors {
 function themeTerminal(): ThemeUIColors {
   return {
     "terminal.foreground": ui.fg,
-    "terminal.background": ui.bg0,
+    "terminal.background": ui.bg1,
     "terminal.ansiBlack": terminal.black,
     "terminal.ansiBlue": terminal.blue,
     "terminal.ansiBrightBlack": terminal.black,
@@ -299,7 +301,7 @@ function themeMenu(): ThemeUIColors {
     "menu.background": ui.bg1,
     "menu.foreground": ui.fg,
     "menu.separatorBackground": ui.border0,
-    "menu.border": ui.border1,
+    "menu.border": ui.border0,
   };
 }
 
@@ -402,10 +404,6 @@ function themePeekView(): ThemeUIColors {
 }
 
 function themeEditor(): ThemeUIColors {
-  const orange = hsl(30, 100, 35);
-  const yellow = hsl(60, 100, 35);
-  const blue = hsl(220, 50, 60);
-  const purple = hsl(310, 40, 50);
   return {
     "editorWidget.foreground": ui.fg,
     "editorWidget.background": ui.bg0,
@@ -413,26 +411,26 @@ function themeEditor(): ThemeUIColors {
     "editorWidget.resizeBorder": ui.border1,
     "editorBracketMatch.background": alpha(syntax.due2, 15),
     "editorBracketMatch.border": alpha(syntax.due2, 50),
-    "editor.findMatchBackground": alpha(orange, 50),
-    "editor.findMatchHighlightBackground": alpha(orange, 50),
-    "editor.findRangeHighlightBackground": alpha(yellow, 50),
+    "editor.findMatchBackground": alpha(bg.orange, 50),
+    "editor.findMatchHighlightBackground": alpha(bg.orange, 50),
+    "editor.findRangeHighlightBackground": alpha(bg.yellow, 50),
     "editor.foreground": ui.fg,
     "editor.background": ui.bg0,
     "editor.foldBackground": transparent,
     "editorLink.activeForeground": terminal.blue,
     "editor.lineHighlightBackground": ui.bg1,
-    "editor.rangeHighlightBackground": alpha(yellow, 10),
+    "editor.rangeHighlightBackground": alpha(bg.yellow, 50),
     "editor.selectionBackground": alpha(syntax.due2, 30),
     "editor.inactiveSelectionBackground": alpha(syntax.due2, 30),
-    "editor.wordHighlightBackground": alpha(blue, 50),
-    "editor.wordHighlightStrongBackground": alpha(purple, 50),
+    "editor.wordHighlightBackground": alpha(bg.blue, 50),
+    "editor.wordHighlightStrongBackground": alpha(bg.purple, 50),
     "editorOverviewRuler.border": alpha(ui.border0, 25),
     "editorCursor.foreground": syntax.tre1,
     "editorGroup.border": ui.border0,
     "editorIndentGuide.background": alpha(ui.border0, 50),
     "editorIndentGuide.activeBackground": ui.border0,
-    "editorLineNumber.foreground": alpha(syntax.alt1, 50),
-    "editorLineNumber.activeForeground": syntax.default,
+    "editorLineNumber.foreground": ui.border1,
+    "editorLineNumber.activeForeground": ui.fg,
 
     "editorCodeLens.foreground": syntax.alt0,
     "editorLightBulb.foreground": syntax.uno1,
@@ -493,7 +491,7 @@ function colors(): ThemeUIColors {
     "icon.foreground": ui.fg,
     "toolbar.hoverBackground": alpha(ui.border1, 30),
     "toolbar.activeBackground": alpha(ui.border1, 50),
-    "widget.border": ui.border1,
+    "widget.border": ui.border0,
     "widget.shadow": ui.bg1,
     ...themeScrollbar(),
     "input.border": ui.border1,
@@ -515,11 +513,11 @@ function colors(): ThemeUIColors {
     ...themeDragAndDrop(),
     ...themeButton(),
     foreground: ui.fg,
-    "panel.background": ui.bg0,
+    "panel.background": ui.bg1,
     "panel.border": ui.border0,
-    "panelTitle.activeBorder": ui.border0,
-    "panelTitle.activeForeground": ui.fg,
-    "panelTitle.inactiveForeground": alpha(ui.fg, 60),
+    "panelTitle.activeBorder": syntax.tre1,
+    "panelTitle.activeForeground": syntax.tre1,
+    "panelTitle.inactiveForeground": ui.fg,
     "sideBar.border": ui.border0,
     "sideBar.background": ui.bg1,
     "sideBarSectionHeader.background": ui.bg1,
@@ -553,11 +551,8 @@ function themeCommandCenter(): ThemeUIColors {
 }
 
 function tokenColors(): TokenColor[] {
-  function createToken(
-    foreground: string,
-    fontStyle?: FontStyle
-  ): TokenSettingColor {
-    return { foreground, fontStyle };
+  function createToken(foreground: string): TokenSettingColor {
+    return { foreground };
   }
 
   const tokens = {
@@ -605,7 +600,6 @@ function tokenColors(): TokenColor[] {
     },
     {
       scope: ["comment", "punctuation.definition.comment"],
-      // TODO: Maybe a nicer color for comments?
       settings: tokens.alt0,
     },
     {
@@ -1060,9 +1054,9 @@ function showContrast(
   const str = [
     fail ? "[!]" : "   ",
     ANSI.bold.yellow(contrast.toFixed(1).toString().padStart(4)),
-    ANSI.bold.magenta(" :: "),
+    ANSI.bold.magenta("::"),
     bgStr,
-    ANSI.bold.magenta(" <- "),
+    ANSI.bold.magenta("<-"),
     fgStr,
   ].join(" ");
   if (fail) {
@@ -1080,10 +1074,46 @@ function save(): void {
 }
 
 function printContrastReport(): void {
+  showContrast("text", ui.error, ui.bg0, "ui.error", "ui.bg0");
   showContrast("text", ui.fg, ui.bg0, "ui.fg", "ui.bg0");
   showContrast("text", ui.fg, ui.bg1, "ui.fg", "ui.bg1");
   showContrast("decoration", ui.border0, ui.bg0, "ui.border0", "ui.bg0");
   showContrast("decoration", ui.border0, ui.bg1, "ui.border0", "ui.bg1");
+  showContrast(
+    "decoration",
+    syntax.uno0,
+    syntax.uno1,
+    "syntax.uno0",
+    "syntax.uno1"
+  );
+  showContrast(
+    "decoration",
+    syntax.tre0,
+    syntax.tre1,
+    "syntax.due0",
+    "syntax.due1"
+  );
+  showContrast(
+    "decoration",
+    syntax.due1,
+    syntax.due2,
+    "syntax.due1",
+    "syntax.due2"
+  );
+  showContrast(
+    "decoration",
+    syntax.tre0,
+    syntax.tre1,
+    "syntax.tre0",
+    "syntax.tre1"
+  );
+  showContrast(
+    "decoration",
+    syntax.tre1,
+    syntax.tre2,
+    "syntax.tre1",
+    "syntax.tre2"
+  );
   showContrast("ui", ui.border1, ui.bg0, "ui.border1", "ui.bg0");
   showContrast("ui", ui.border1, ui.bg1, "ui.border1", "ui.bg1");
   showContrast(
