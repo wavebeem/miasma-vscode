@@ -1,7 +1,6 @@
 // https://code.visualstudio.com/api/references/theme-color
-import "./extend-colord";
 import fs from "fs";
-import { colord } from "colord";
+import { colord } from "./colord";
 import * as ANSI from "ansi-colors";
 import { ThemeUIColors } from "./types";
 
@@ -53,6 +52,17 @@ const hue = {
   tre: 330,
 } as const;
 
+const terminal = {
+  black: lch(35, 30, hue.main),
+  red: lch(70, 60, 20),
+  green: lch(70, 60, hue.main),
+  yellow: lch(70, 60, hue.due),
+  blue: lch(70, 60, 270),
+  magenta: lch(70, 60, hue.tre),
+  cyan: lch(70, 60, 200),
+  white: lch(94, 15, hue.uno),
+} as const;
+
 const ui = {
   bg0: lch(18, 14, hue.main),
   bg1: lch(12, 14, hue.main),
@@ -66,7 +76,7 @@ const ui = {
   bracket2: lch(65, 32, hue.due),
   bracket3: lch(65, 31, hue.tre),
 
-  error: lch(59, 84, 33),
+  error: terminal.red,
 } as const;
 
 const syntax = {
@@ -84,17 +94,6 @@ const syntax = {
   tre0: lch(90, 30, hue.tre),
   tre1: lch(80, 50, hue.tre),
   tre2: lch(70, 60, hue.tre),
-} as const;
-
-const terminal = {
-  black: lch(35, 30, hue.main),
-  red: lch(70, 60, 20),
-  green: lch(70, 60, hue.main),
-  yellow: lch(70, 60, hue.due),
-  blue: lch(70, 60, 270),
-  magenta: lch(70, 60, hue.tre),
-  cyan: lch(70, 60, 200),
-  white: lch(94, 15, hue.uno),
 } as const;
 
 const diff = {
@@ -143,7 +142,7 @@ function themeActivityBar(): ThemeUIColors {
     "activityBarBadge.background": syntax.due1,
     "activityBarBadge.foreground": ui.bg0,
     "activityBar.activeBorder": syntax.tre2,
-    "activityBar.activeBackground": alpha(ui.border1, 0),
+    "activityBar.activeBackground": transparent,
   };
 }
 
@@ -212,7 +211,7 @@ function themeSettings(): ThemeUIColors {
 function themeTerminal(): ThemeUIColors {
   return {
     "terminal.foreground": ui.fg,
-    "terminal.background": ui.bg0,
+    "terminal.background": ui.bg1,
     "terminal.ansiBlack": terminal.black,
     "terminal.ansiBlue": terminal.blue,
     "terminal.ansiBrightBlack": terminal.black,
@@ -302,7 +301,7 @@ function themeMenu(): ThemeUIColors {
     "menu.background": ui.bg1,
     "menu.foreground": ui.fg,
     "menu.separatorBackground": ui.border0,
-    "menu.border": ui.border1,
+    "menu.border": ui.border0,
   };
 }
 
@@ -430,8 +429,8 @@ function themeEditor(): ThemeUIColors {
     "editorGroup.border": ui.border0,
     "editorIndentGuide.background": alpha(ui.border0, 50),
     "editorIndentGuide.activeBackground": ui.border0,
-    "editorLineNumber.foreground": ui.border0,
-    "editorLineNumber.activeForeground": ui.border1,
+    "editorLineNumber.foreground": ui.border1,
+    "editorLineNumber.activeForeground": ui.fg,
 
     "editorCodeLens.foreground": syntax.alt0,
     "editorLightBulb.foreground": syntax.uno1,
@@ -514,11 +513,11 @@ function colors(): ThemeUIColors {
     ...themeDragAndDrop(),
     ...themeButton(),
     foreground: ui.fg,
-    "panel.background": ui.bg0,
+    "panel.background": ui.bg1,
     "panel.border": ui.border0,
-    "panelTitle.activeBorder": ui.border0,
-    "panelTitle.activeForeground": ui.fg,
-    "panelTitle.inactiveForeground": alpha(ui.fg, 60),
+    "panelTitle.activeBorder": syntax.tre1,
+    "panelTitle.activeForeground": syntax.tre1,
+    "panelTitle.inactiveForeground": ui.fg,
     "sideBar.border": ui.border0,
     "sideBar.background": ui.bg1,
     "sideBarSectionHeader.background": ui.bg1,
@@ -552,11 +551,8 @@ function themeCommandCenter(): ThemeUIColors {
 }
 
 function tokenColors(): TokenColor[] {
-  function createToken(
-    foreground: string,
-    fontStyle?: FontStyle
-  ): TokenSettingColor {
-    return { foreground, fontStyle };
+  function createToken(foreground: string): TokenSettingColor {
+    return { foreground };
   }
 
   const tokens = {
@@ -1078,6 +1074,7 @@ function save(): void {
 }
 
 function printContrastReport(): void {
+  showContrast("text", ui.error, ui.bg0, "ui.error", "ui.bg0");
   showContrast("text", ui.fg, ui.bg0, "ui.fg", "ui.bg0");
   showContrast("text", ui.fg, ui.bg1, "ui.fg", "ui.bg1");
   showContrast("decoration", ui.border0, ui.bg0, "ui.border0", "ui.bg0");
