@@ -2,7 +2,7 @@
   "name": "miasma-vscode",
   "displayName": "Miasma",
   "description": "A toxic theme featuring deep green complemented by pale yellow, orange, and bold pink",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/wavebeem/miasma-vscode.git"
