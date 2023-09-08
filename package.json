@@ -39,7 +39,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "Brian Mock <brian@wavebeem.com>",
+  "author": "Sage Fennel <mail@wavebeem.com>",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^18.16.3",

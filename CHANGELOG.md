@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.1 (2023-09-07)
+
+- Updated author name
+
 ## v0.1.0 (2023-05-13)
 
 - Tweaked almost every color
