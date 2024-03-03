@@ -63,7 +63,7 @@ const ui = {
 
   link: hsl(hue.uno, 90, 50),
 
-  accent0: hsl(hue.uno, 90, 50),
+  accent0: hsl(hue.tre, 90, 80),
   accent1: hsl(hue.due, 90, 80),
 
   bracket1: hsl(hue.uno, 40, 45),
