@@ -46,71 +46,65 @@ interface TokenColor {
 }
 
 const hue = {
-  main: 160,
+  bg: 160,
   uno: 85,
-  due: 330,
-  tre: 20,
-} as const;
-
-const hue2 = {
-  main: 250,
-  uno: 85,
-  due: 180,
-  tre: 30,
-} as const;
-
-const terminal = {
-  black: lch(30, 40, hue.main),
-  white: lch(96, 10, hue.main),
-  green: hsl(hue2.uno, 85, 45),
-  red: lch(70, 75, 20),
-  yellow: lch(70, 75, 65),
-  blue: lch(70, 75, 280),
-  magenta: lch(70, 75, 330),
-  cyan: lch(70, 75, 190),
+  due: 20,
+  tre: 330,
 } as const;
 
 const ui = {
-  bg0: hsl(hue2.main, 40, 20),
-  bg1: hsl(hue2.main, 40, 15),
+  bg0: hsl(hue.bg, 40, 14),
+  bg1: hsl(hue.bg, 40, 10),
 
-  fg: hsl(hue2.main, 100, 90),
+  fg: hsl(hue.bg, 60, 80),
 
-  border0: hsl(hue2.main, 40, 35),
-  border1: hsl(hue2.main, 40, 60),
+  border0: hsl(hue.bg, 40, 24),
+  border1: hsl(hue.bg, 40, 40),
 
-  bracket1: lch(65, 48, hue.uno),
-  bracket2: lch(65, 32, hue.due),
-  bracket3: lch(65, 31, hue.tre),
+  link: hsl(hue.uno, 90, 50),
 
-  link: hsl(hue2.uno, 90, 50),
+  accent0: hsl(hue.uno, 90, 50),
+  accent1: hsl(hue.due, 90, 80),
 
-  accent0: hsl(hue2.uno, 90, 50),
-  accent1: hsl(hue2.uno, 90, 70),
+  bracket1: hsl(hue.uno, 40, 45),
+  bracket2: hsl(hue.due, 40, 60),
+  bracket3: hsl(hue.tre, 30, 65),
 
-  error: terminal.red,
+  error: "#ff6666",
 } as const;
 
 const syntax = {
   default: ui.fg,
-  alt0: hsl(hue2.main, 15, 60),
-  alt1: hsl(hue2.main, 85, 75),
 
-  uno0: hsl(hue2.uno, 65, 75),
-  uno1: hsl(hue2.uno, 85, 45),
+  alt0: hsl(hue.bg, 15, 60),
+  alt1: hsl(hue.bg, 40, 46),
 
-  due0: hsl(hue2.due, 90, 80),
-  due1: hsl(hue2.due, 90, 45),
-  due2: hsl(hue2.due, 90, 35),
+  uno0: hsl(hue.uno, 70, 80),
+  uno1: hsl(hue.uno, 80, 45),
 
-  tre0: hsl(hue2.tre, 100, 80),
-  tre1: hsl(hue2.tre, 100, 70),
-  tre2: hsl(hue2.tre, 100, 60),
+  due0: hsl(hue.due, 70, 90),
+  due1: hsl(hue.due, 80, 75),
+  due2: hsl(hue.due, 90, 60),
+
+  tre0: hsl(hue.tre, 70, 90),
+  tre1: hsl(hue.tre, 80, 80),
+  tre2: hsl(hue.tre, 90, 70),
+} as const;
+
+const terminal = {
+  black: hsl(hue.bg, 35, 26),
+  red: hsl(340, 67, 68),
+  green: hsl(hue.bg, 64, 68),
+  yellow: hsl(hue.uno, 58, 76),
+  blue: hsl(220, 71, 69),
+  magenta: hsl(hue.tre, 56, 77),
+  cyan: hsl(180, 64, 68),
+  white: hsl(hue.due, 80, 92),
 } as const;
 
 const diff = {
-  red: lch(30, 60, 20),
-  blue: lch(30, 60, 270),
+  red: hsl(340, 100, 30),
+  blue: hsl(220, 100, 30),
 } as const;
 
 const bg = {
@@ -1077,7 +1071,7 @@ function showContrast(
   const fail = contrast < Contrast[level];
   const str = [
     fail ? "[!]" : "   ",
-    ANSI.bold.yellow(contrast.toFixed(1).toString().padStart(4)),
+    ANSI.bold.yellow(contrast.toFixed(2).toString().padStart(5)),
     ANSI.bold.magenta("::"),
     bgStr,
     ANSI.bold.magenta("<-"),
