@@ -58,7 +58,7 @@ const ui = {
 
   fg: hsl(hue.bg, 65, 85),
 
-  border0: hsl(hue.bg, 50, 26),
+  border0: hsl(hue.bg, 50, 25),
   border1: hsl(hue.bg, 50, 45),
 
   link: hsl(hue.uno, 90, 50),
@@ -452,8 +452,8 @@ function themeEditor(): ThemeUIColors {
     "editorOverviewRuler.border": alpha(ui.border0, 25),
     "editorCursor.foreground": ui.accent0,
     "editorGroup.border": ui.border0,
-    "editorIndentGuide.background": alpha(ui.border0, 50),
-    "editorIndentGuide.activeBackground": ui.border0,
+    "editorIndentGuide.background": alpha(ui.fg, 10),
+    "editorIndentGuide.activeBackground": alpha(ui.fg, 50),
     "editorLineNumber.foreground": ui.border1,
     "editorLineNumber.activeForeground": ui.fg,
 
@@ -547,7 +547,7 @@ function colors(): ThemeUIColors {
     "sideBar.background": ui.bg1,
     "sideBarSectionHeader.background": ui.bg1,
     "sideBarSectionHeader.border": ui.border0,
-    "tree.indentGuidesStroke": alpha(ui.border0, 50),
+    "tree.indentGuidesStroke": alpha(ui.fg, 10),
     ...themeTabs(),
     "pickerGroup.border": alpha(ui.border0, 50),
     ...themeDiff(),
