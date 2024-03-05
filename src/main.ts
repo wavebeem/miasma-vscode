@@ -53,20 +53,20 @@ const hue = {
 } as const;
 
 const ui = {
-  bg0: hsl(hue.bg, 40, 14),
-  bg1: hsl(hue.bg, 40, 10),
+  bg0: hsl(hue.bg, 50, 14),
+  bg1: hsl(hue.bg, 50, 17),
 
-  fg: hsl(hue.bg, 60, 80),
+  fg: hsl(hue.bg, 65, 85),
 
-  border0: hsl(hue.bg, 40, 24),
-  border1: hsl(hue.bg, 40, 40),
+  border0: hsl(hue.bg, 50, 26),
+  border1: hsl(hue.bg, 50, 45),
 
   link: hsl(hue.uno, 90, 50),
 
   accent0: hsl(hue.tre, 90, 80),
   accent1: hsl(hue.due, 90, 80),
 
-  bracket1: hsl(hue.uno, 40, 45),
+  bracket1: hsl(hue.uno, 40, 50),
   bracket2: hsl(hue.due, 40, 60),
   bracket3: hsl(hue.tre, 30, 65),
 
@@ -77,17 +77,17 @@ const syntax = {
   default: ui.fg,
 
   alt0: hsl(hue.bg, 15, 60),
-  alt1: hsl(hue.bg, 40, 46),
+  alt1: hsl(hue.bg, 40, 48),
 
   uno0: hsl(hue.uno, 70, 80),
-  uno1: hsl(hue.uno, 80, 45),
+  uno1: hsl(hue.uno, 70, 60),
 
-  due0: hsl(hue.due, 70, 90),
-  due1: hsl(hue.due, 80, 75),
+  due0: hsl(hue.due, 75, 90),
+  due1: hsl(hue.due, 85, 80),
   due2: hsl(hue.due, 90, 60),
 
-  tre0: hsl(hue.tre, 70, 90),
-  tre1: hsl(hue.tre, 80, 80),
+  tre0: hsl(hue.tre, 75, 90),
+  tre1: hsl(hue.tre, 85, 80),
   tre2: hsl(hue.tre, 90, 70),
 } as const;
 
