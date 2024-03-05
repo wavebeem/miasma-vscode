@@ -1,8 +1,10 @@
 # Miasma
 
+For Visual Studio Code
+
 ![](img/icon.png)
 
-wavebeem's toxic green color theme
+A noxious theme featuring deep green complemented by lime, peach, and grapefruit.
 
 # License
 
