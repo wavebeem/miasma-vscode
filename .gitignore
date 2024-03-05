@@ -1,7 +1,11 @@
 .DS_Store
+*~lock~
+
 node_modules
 build
+examples
+
+.vscode/settings.json
+
 *.vsix
 *.zip
-examples
-.vscode/settings.json
