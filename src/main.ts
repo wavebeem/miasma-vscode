@@ -79,14 +79,14 @@ const syntax = {
   alt0: hsl(hue.bg, 15, 60),
   alt1: hsl(hue.bg, 40, 48),
 
-  uno0: hsl(hue.uno, 70, 80),
+  uno0: hsl(hue.uno, 80, 80),
   uno1: hsl(hue.uno, 70, 60),
 
-  due0: hsl(hue.due, 75, 90),
+  due0: hsl(hue.due, 100, 90),
   due1: hsl(hue.due, 85, 80),
   due2: hsl(hue.due, 90, 60),
 
-  tre0: hsl(hue.tre, 75, 90),
+  tre0: hsl(hue.tre, 100, 90),
   tre1: hsl(hue.tre, 85, 80),
   tre2: hsl(hue.tre, 90, 70),
 } as const;
@@ -1067,7 +1067,7 @@ function tokenColors(): TokenColor[] {
   ];
 }
 
-let hasContrastError = false;
+const contrastErrors: string[] = [];
 
 function showContrast(
   level: ContrastLevel,
@@ -1087,8 +1087,9 @@ function showContrast(
     fgStr,
   ].join(" ");
   if (fail) {
-    console.error(ANSI.bold.red(str));
-    hasContrastError = true;
+    const msg = ANSI.bold.red(str);
+    console.error(msg);
+    contrastErrors.push(msg);
   } else {
     console.log(str);
   }
@@ -1193,8 +1194,11 @@ function printContrastReport(): void {
   showContrast("text", ui.bracket1, ui.bg0, "ui.bracket1", "ui.bg0");
   showContrast("text", ui.bracket2, ui.bg0, "ui.bracket2", "ui.bg0");
   showContrast("text", ui.bracket3, ui.bg0, "ui.bracket3", "ui.bg0");
-  if (hasContrastError) {
-    console.error(ANSI.bold.red("=== CONTRAST FAILURE ==="));
+  if (contrastErrors.length > 0) {
+    console.error(ANSI.bold.red("\n>>> CONTRAST FAILURE\n"));
+    for (const error of contrastErrors) {
+      console.error(error);
+    }
     process.exit(1);
   }
 }

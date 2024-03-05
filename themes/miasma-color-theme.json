@@ -288,7 +288,7 @@
         "entity.name.tag"
       ],
       "settings": {
-        "foreground": "#d2f0a8"
+        "foreground": "#d3f5a3"
       }
     },
     {
@@ -428,7 +428,7 @@
         "meta.preprocessor.numeric"
       ],
       "settings": {
-        "foreground": "#f9d2e6"
+        "foreground": "#ffcce6"
       }
     },
     {
@@ -538,7 +538,7 @@
         "source.coffee.embedded"
       ],
       "settings": {
-        "foreground": "#d2f0a8"
+        "foreground": "#d3f5a3"
       }
     },
     {
@@ -628,7 +628,7 @@
         "entity.name.operator.custom-literal"
       ],
       "settings": {
-        "foreground": "#f9dfd2"
+        "foreground": "#ffddcc"
       }
     },
     {
@@ -692,7 +692,7 @@
         "meta.object-literal.key"
       ],
       "settings": {
-        "foreground": "#d2f0a8"
+        "foreground": "#d3f5a3"
       }
     },
     {
@@ -707,7 +707,7 @@
         "support.constant.color"
       ],
       "settings": {
-        "foreground": "#f9dfd2"
+        "foreground": "#ffddcc"
       }
     },
     {
@@ -731,7 +731,7 @@
         "support.other.parenthesis.regexp"
       ],
       "settings": {
-        "foreground": "#f9d2e6"
+        "foreground": "#ffcce6"
       }
     },
     {
@@ -742,7 +742,7 @@
         "constant.character.set.regexp"
       ],
       "settings": {
-        "foreground": "#f9d2e6"
+        "foreground": "#ffcce6"
       }
     },
     {
@@ -757,7 +757,7 @@
     {
       "scope": "keyword.operator.quantifier.regexp",
       "settings": {
-        "foreground": "#f9d2e6"
+        "foreground": "#ffcce6"
       }
     },
     {
@@ -766,13 +766,13 @@
         "constant.other.option"
       ],
       "settings": {
-        "foreground": "#f9d2e6"
+        "foreground": "#ffcce6"
       }
     },
     {
       "scope": "constant.character.escape",
       "settings": {
-        "foreground": "#f9d2e6"
+        "foreground": "#ffcce6"
       }
     },
     {
