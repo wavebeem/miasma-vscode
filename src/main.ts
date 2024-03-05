@@ -204,7 +204,7 @@ function themeList(): ThemeUIColors {
 
 function themeWelcome(): ThemeUIColors {
   return {
-    "textLink.foreground": ui.accent0,
+    "textLink.foreground": ui.link,
     "textLink.activeForeground": ui.link,
     "textBlockQuote.background": transparent,
     "textBlockQuote.border": syntax.default,
@@ -227,7 +227,7 @@ function themeSettings(): ThemeUIColors {
 function themeTerminal(): ThemeUIColors {
   return {
     "terminal.foreground": ui.fg,
-    "terminal.background": ui.bg1,
+    "terminal.background": ui.bg0,
     "terminal.ansiBlack": terminal.black,
     "terminal.ansiBlue": terminal.blue,
     "terminal.ansiBrightBlack": terminal.black,
@@ -298,6 +298,10 @@ function themeStatusBar(): ThemeUIColors {
     "statusBar.border": ui.border0,
     "statusBarItem.activeBackground": alpha(ui.border1, 40),
     "statusBarItem.hoverBackground": alpha(ui.border1, 20),
+    "statusBarItem.remoteForeground": ui.fg,
+    "statusBarItem.remoteBackground": ui.bg1,
+    "statusBarItem.remoteHoverForeground": ui.fg,
+    "statusBarItem.remoteHoverBackground": alpha(ui.border1, 20),
     "statusBar.background": ui.bg1,
     "statusBar.debuggingBackground": ui.bg1,
     "statusBar.noFolderBackground": ui.bg1,
@@ -508,7 +512,7 @@ function colors(): ThemeUIColors {
     "toolbar.hoverBackground": alpha(ui.border1, 30),
     "toolbar.activeBackground": alpha(ui.border1, 50),
     "widget.border": ui.border0,
-    "widget.shadow": ui.bg1,
+    "widget.shadow": ui.bg0,
     ...themeScrollbar(),
     "input.border": ui.border1,
     "input.background": ui.bg0,
@@ -529,7 +533,7 @@ function colors(): ThemeUIColors {
     ...themeDragAndDrop(),
     ...themeButton(),
     foreground: ui.fg,
-    "panel.background": ui.bg1,
+    "panel.background": ui.bg0,
     "panel.border": ui.border0,
     "panelTitle.activeBorder": ui.accent0,
     "panelTitle.activeForeground": ui.accent0,
