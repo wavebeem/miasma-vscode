@@ -92,14 +92,14 @@ const syntax = {
 } as const;
 
 const terminal = {
-  black: hsl(hue.bg, 35, 26),
-  red: hsl(340, 67, 68),
-  green: hsl(hue.bg, 64, 68),
-  yellow: hsl(hue.uno, 58, 76),
-  blue: hsl(220, 71, 69),
-  magenta: hsl(hue.tre, 56, 77),
-  cyan: hsl(180, 64, 68),
-  white: hsl(hue.due, 80, 92),
+  black: hsl(hue.bg, 35, 25),
+  red: hsl(hue.tre, 80, 70),
+  green: hsl(hue.uno, 90, 70),
+  yellow: hsl(hue.due, 80, 70),
+  blue: hsl(220, 90, 70),
+  magenta: hsl(290, 80, 70),
+  cyan: hsl(180, 90, 70),
+  white: hsl(hue.due, 30, 90),
 } as const;
 
 const diff = {
@@ -159,6 +159,11 @@ function themeActivityBar(): ThemeUIColors {
     "activityBarBadge.foreground": ui.bg0,
     "activityBar.activeBorder": ui.accent0,
     "activityBar.activeBackground": transparent,
+
+    "activityBarTop.activeBorder": ui.accent0,
+    "activityBarTop.dropBorder": ui.accent0,
+    "activityBarTop.foreground": ui.accent0,
+    "activityBarTop.inactiveForeground": ui.fg,
   };
 }
 
@@ -458,8 +463,8 @@ function themeEditor(): ThemeUIColors {
 
     "editorRuler.foreground": alpha(ui.border0, 50),
 
-    "editorSuggestWidget.background": ui.bg1,
-    "editorHoverWidget.background": ui.bg1,
+    "editorSuggestWidget.background": ui.bg0,
+    "editorHoverWidget.background": ui.bg0,
     "editorSuggestWidget.border": ui.border1,
     "editorHoverWidget.border": ui.border1,
 
