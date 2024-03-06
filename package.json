@@ -1,8 +1,8 @@
 {
   "name": "miasma-vscode",
   "displayName": "Miasma",
-  "description": "A noxious theme featuring deep green complemented by lime, peach, and grapefruit",
-  "version": "0.1.1",
+  "description": "A noxious theme featuring deep green complemented by lime, peach, and dragon fruit accents",
+  "version": "0.2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/wavebeem/miasma-vscode.git"

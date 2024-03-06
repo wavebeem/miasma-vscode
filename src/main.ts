@@ -59,7 +59,7 @@ const hue = {
   bg: 160,
   uno: 85,
   due: 20,
-  tre: 330,
+  tre: 320,
 } as const;
 
 const ui = {
@@ -80,7 +80,7 @@ const ui = {
   bracket2: hsl(hue.due, 40, 60),
   bracket3: hsl(hue.tre, 30, 65),
 
-  error: "#ff6666",
+  error: hsl(350, 80, 75),
 } as const;
 
 const syntax = {
@@ -93,7 +93,7 @@ const syntax = {
   uno1: hsl(hue.uno, 70, 60),
 
   due0: hsl(hue.due, 100, 90),
-  due1: hsl(hue.due, 85, 80),
+  due1: hsl(hue.due, 90, 75),
   due2: hsl(hue.due, 90, 60),
 
   tre0: hsl(hue.tre, 100, 90),
@@ -103,11 +103,11 @@ const syntax = {
 
 const terminal = {
   black: hsl(hue.bg, 35, 25),
-  red: hsl(hue.tre, 80, 70),
+  red: ui.error,
   green: hsl(hue.uno, 90, 70),
   yellow: hsl(hue.due, 80, 70),
-  blue: hsl(220, 90, 70),
-  magenta: hsl(290, 80, 70),
+  blue: hsl(220, 90, 75),
+  magenta: hsl(290, 80, 75),
   cyan: hsl(180, 90, 70),
   white: hsl(hue.due, 30, 90),
 } as const;
@@ -1124,11 +1124,15 @@ function save(): void {
 
 function printContrastReport(): void {
   showContrast("text", ui.error, ui.bg0, "ui.error", "ui.bg0");
+  showContrast("text", ui.error, ui.bg1, "ui.error", "ui.bg1");
   showContrast("text", ui.fg, ui.bg0, "ui.fg", "ui.bg0");
   showContrast("text", ui.fg, ui.bg1, "ui.fg", "ui.bg1");
   showContrast("text", ui.link, ui.bg0, "ui.accent0", "ui.bg0");
+  showContrast("text", ui.link, ui.bg1, "ui.accent0", "ui.bg1");
   showContrast("text", ui.accent0, ui.bg0, "ui.accent1", "ui.bg0");
+  showContrast("text", ui.accent0, ui.bg1, "ui.accent1", "ui.bg1");
   showContrast("text", ui.accent1, ui.bg0, "ui.accent2", "ui.bg0");
+  showContrast("text", ui.accent1, ui.bg1, "ui.accent2", "ui.bg1");
   showContrast("decoration", ui.border0, ui.bg0, "ui.border0", "ui.bg0");
   showContrast("decoration", ui.border0, ui.bg1, "ui.border0", "ui.bg1");
   showContrast(
@@ -1211,6 +1215,7 @@ function printContrastReport(): void {
       continue;
     }
     showContrast("text", color, ui.bg0, `terminal.${name}`, "ui.bg0");
+    showContrast("text", color, ui.bg1, `terminal.${name}`, "ui.bg1");
   }
   showContrast("text", ui.bracket1, ui.bg0, "ui.bracket1", "ui.bg0");
   showContrast("text", ui.bracket2, ui.bg0, "ui.bracket2", "ui.bg0");
