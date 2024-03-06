@@ -1,20 +1,30 @@
 // https://code.visualstudio.com/api/references/theme-color
 import fs from "fs";
-import { colord } from "./colord";
+import Color from "colorjs.io";
 import * as ANSI from "ansi-colors";
 import { ThemeUIColors } from "./types";
 
 const transparent = "#00000000";
 
-// WCAG AA minimum contrast values
 // https://webaim.org/resources/contrastchecker/
+// https://www.myndex.com/APCA/
 const Contrast = {
-  text: 4.5,
-  ui: 3,
-  // Not a WCAG value
-  decoration: 1.2,
+  // TODO: Not really sure what values make the most sense here yet...
+  APCA: {
+    text: 45,
+    ui: 30,
+    decoration: 10,
+    // decoration: 15,
+  },
+  WCAG21: {
+    text: 4.5,
+    ui: 3,
+    // Not a WCAG value
+    decoration: 1.2,
+  },
 } as const;
-type ContrastLevel = keyof typeof Contrast;
+type ContrastAlgorithm = keyof typeof Contrast;
+type ContrastLevel = keyof (typeof Contrast)[ContrastAlgorithm];
 
 // Sort the JSON object so things always come out in the same order, and minor
 // refactoring doesn't cause the build files to change
@@ -116,22 +126,26 @@ const bg = {
 
 /** Only use LCH for colors I don't care about as much. */
 function lch(l: number, c: number, h: number): string {
-  return colord({ l, c, h }).toHex();
+  return new Color("lch", [l, c, h]).to("srgb").toString({ format: "hex" });
 }
 
 /** Lovingly hand picked colors use HSL, at least until OKLCH is available. */
 function hsl(h: number, s: number, l: number): string {
-  return colord({ h, s, l }).toHex();
+  return new Color("hsl", [h, s, l]).to("srgb").toString({ format: "hex" });
 }
+
+// function oklch(l: number, c: number, h: number): string {
+//   return new Color("oklch", [l, c, h]).to("srgb").toString({ format: "hex" });
+// }
 
 /**
  * This isn't a great practice, but VS Code forces us to use transparent colors
  * in certain scenarios. Limit this to those, please.
  */
 function alpha(color: string, percent: number): string {
-  const rgb = colord(color).toRgb();
-  rgb.a = percent / 100;
-  return colord(rgb).toHex();
+  const rgb = new Color(color);
+  rgb.alpha = percent / 100;
+  return rgb.toString({ format: "hex" });
 }
 
 function config(): {
@@ -452,8 +466,8 @@ function themeEditor(): ThemeUIColors {
     "editorOverviewRuler.border": alpha(ui.border0, 25),
     "editorCursor.foreground": ui.accent0,
     "editorGroup.border": ui.border0,
-    "editorIndentGuide.background": alpha(ui.fg, 10),
-    "editorIndentGuide.activeBackground": alpha(ui.fg, 50),
+    "editorIndentGuide.background1": alpha(ui.fg, 10),
+    "editorIndentGuide.activeBackground1": alpha(ui.fg, 50),
     "editorLineNumber.foreground": ui.border1,
     "editorLineNumber.activeForeground": ui.fg,
 
@@ -1076,14 +1090,21 @@ function showContrast(
   fgStr: string,
   bgStr: string
 ): void {
-  const contrast = colord(fg).contrast(bg);
-  const fail = contrast < Contrast[level];
+  // const algorithm = "APCA";
+  const algorithm = "WCAG21";
+  const contrast = new Color(fg).contrast(bg, algorithm);
+  const target = Contrast[algorithm][level];
+  const fail = contrast < target;
+  const failBadge = "[!]";
+  const noBadge = " ".repeat(failBadge.length);
   const str = [
-    fail ? "[!]" : "   ",
-    ANSI.bold.yellow(contrast.toFixed(2).toString().padStart(5)),
-    ANSI.bold.magenta("::"),
+    fail ? failBadge : noBadge,
+    ANSI.yellow(contrast.toFixed(2).toString().padStart(5)),
+    ANSI.cyan("<"),
+    ANSI.yellow(String(target).padStart(4)),
+    ANSI.cyan("::"),
     bgStr,
-    ANSI.bold.magenta("<-"),
+    ANSI.cyan("<-"),
     fgStr,
   ].join(" ");
   if (fail) {

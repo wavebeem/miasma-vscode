@@ -57,7 +57,7 @@
     "editor.lineHighlightBackground": "#164133",
     "editor.rangeHighlightBackground": "#5e630080",
     "editor.selectionBackground": "#f57a3d4d",
-    "editor.wordHighlightBackground": "#0063ca80",
+    "editor.wordHighlightBackground": "#0066b280",
     "editor.wordHighlightStrongBackground": "#9f2b9580",
     "editorBracketHighlight.foreground1": "#88b34d",
     "editorBracketHighlight.foreground2": "#c28b70",
@@ -81,8 +81,8 @@
     "editorGutter.modifiedBackground": "#db75f0",
     "editorHoverWidget.background": "#12362a",
     "editorHoverWidget.border": "#39ac86",
-    "editorIndentGuide.activeBackground": "#c0f2e180",
-    "editorIndentGuide.background": "#c0f2e11a",
+    "editorIndentGuide.activeBackground1": "#c0f2e180",
+    "editorIndentGuide.background1": "#c0f2e11a",
     "editorLightBulb.foreground": "#a5e052",
     "editorLightBulbAutoFix.foreground": "#f7bea1",
     "editorLineNumber.activeForeground": "#c0f2e1",
@@ -628,7 +628,7 @@
         "entity.name.operator.custom-literal"
       ],
       "settings": {
-        "foreground": "#ffddcc"
+        "foreground": "#fdc"
       }
     },
     {
@@ -707,7 +707,7 @@
         "support.constant.color"
       ],
       "settings": {
-        "foreground": "#ffddcc"
+        "foreground": "#fdc"
       }
     },
     {
