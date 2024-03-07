@@ -3,6 +3,7 @@ import fs from "fs";
 import Color from "colorjs.io";
 import * as ANSI from "ansi-colors";
 import { ThemeUIColors } from "./types";
+// import { letsGoOKLCH } from "./convert-oklch";
 
 const transparent = "#00000000";
 
@@ -137,6 +138,14 @@ function hsl(h: number, s: number, l: number): string {
 // function oklch(l: number, c: number, h: number): string {
 //   return new Color("oklch", [l, c, h]).to("srgb").toString({ format: "hex" });
 // }
+
+// letsGoOKLCH({
+//   ui,
+//   syntax,
+//   terminal,
+//   diff,
+//   bg,
+// });
 
 /**
  * This isn't a great practice, but VS Code forces us to use transparent colors
