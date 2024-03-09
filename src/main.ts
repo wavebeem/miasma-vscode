@@ -67,7 +67,7 @@ const ui = {
   bg0: hsl(hue.bg, 50, 14),
   bg1: hsl(hue.bg, 50, 17),
 
-  fg: hsl(hue.bg, 65, 85),
+  fg: hsl(hue.bg, 70, 80),
 
   border0: hsl(hue.bg, 50, 25),
   border1: hsl(hue.bg, 50, 45),
@@ -85,7 +85,7 @@ const ui = {
 } as const;
 
 const syntax = {
-  default: ui.fg,
+  default: hsl(hue.bg, 60, 90),
 
   alt0: hsl(hue.bg, 15, 60),
   alt1: hsl(hue.bg, 40, 48),
@@ -226,7 +226,7 @@ function themeList(): ThemeUIColors {
     "quickInputList.focusForeground": ui.bg0,
     "quickInputList.focusBackground": ui.fg,
 
-    "list.hoverBackground": alpha(ui.border1, 25),
+    "list.hoverBackground": alpha(ui.border1, 15),
   };
 }
 
@@ -254,7 +254,7 @@ function themeSettings(): ThemeUIColors {
 
 function themeTerminal(): ThemeUIColors {
   return {
-    "terminal.foreground": ui.fg,
+    "terminal.foreground": syntax.default,
     "terminal.background": ui.bg0,
     "terminal.ansiBlack": terminal.black,
     "terminal.ansiBlue": terminal.blue,
@@ -377,9 +377,9 @@ function themeHighlightBorders(): ThemeUIColors {
 function themeScrollbar(): ThemeUIColors {
   return {
     "scrollbar.shadow": transparent,
-    "scrollbarSlider.background": alpha(ui.border1, 40),
-    "scrollbarSlider.hoverBackground": alpha(ui.border1, 50),
-    "scrollbarSlider.activeBackground": alpha(ui.border1, 60),
+    "scrollbarSlider.background": alpha(ui.fg, 40),
+    "scrollbarSlider.hoverBackground": alpha(ui.fg, 50),
+    "scrollbarSlider.activeBackground": alpha(ui.fg, 60),
   };
 }
 
@@ -456,7 +456,7 @@ function themeEditor(): ThemeUIColors {
     "editorWidget.foreground": ui.fg,
     "editorWidget.background": ui.bg0,
     "editorWidget.border": ui.border1,
-    "editorWidget.resizeBorder": ui.border1,
+    "editorWidget.resizeBorder": ui.bg0,
     "editorBracketMatch.background": alpha(syntax.due2, 15),
     "editorBracketMatch.border": alpha(syntax.due2, 50),
     "editor.findMatchBackground": alpha(bg.orange, 50),
@@ -481,7 +481,7 @@ function themeEditor(): ThemeUIColors {
     "editorLineNumber.activeForeground": ui.fg,
 
     "editorCodeLens.foreground": syntax.alt0,
-    "editorLightBulb.foreground": syntax.uno1,
+    "editorLightBulb.foreground": syntax.due1,
     "editorLightBulbAutoFix.foreground": syntax.due1,
 
     "editorRuler.foreground": alpha(ui.border0, 50),
@@ -507,7 +507,7 @@ function themeTitlebar(): ThemeUIColors {
     "titleBar.activeBackground": ui.bg1,
     "titleBar.activeForeground": ui.fg,
     "titleBar.inactiveBackground": ui.bg1,
-    "titleBar.inactiveForeground": alpha(ui.fg, 70),
+    "titleBar.inactiveForeground": ui.border1,
     "titleBar.border": ui.border0,
   };
 }
@@ -525,9 +525,9 @@ function themeTabs(): ThemeUIColors {
     "tab.activeBorderTop": ui.accent0,
     "tab.unfocusedActiveBorderTop": ui.accent0,
     "tab.activeBackground": ui.bg0,
-    "tab.activeForeground": ui.fg,
+    "tab.activeForeground": syntax.default,
     "tab.inactiveBackground": ui.bg1,
-    "tab.inactiveForeground": alpha(ui.fg, 80),
+    "tab.inactiveForeground": ui.fg,
   };
 }
 
@@ -535,16 +535,16 @@ function colors(): ThemeUIColors {
   return {
     focusBorder: ui.accent0,
     errorForeground: terminal.red,
-    disabledForeground: alpha(ui.fg, 50),
+    disabledForeground: ui.border1,
     "icon.foreground": ui.fg,
-    "toolbar.hoverBackground": alpha(ui.border1, 30),
-    "toolbar.activeBackground": alpha(ui.border1, 50),
+    "toolbar.hoverBackground": alpha(ui.border1, 20),
+    "toolbar.activeBackground": alpha(ui.border1, 40),
     "widget.border": ui.border0,
     "widget.shadow": ui.bg0,
     ...themeScrollbar(),
     "input.border": ui.border1,
     "input.background": ui.bg0,
-    "input.placeholderForeground": alpha(ui.fg, 40),
+    "input.placeholderForeground": ui.border1,
     "progressBar.background": ui.fg,
     "inputOption.activeBorder": ui.fg,
     ...themeCommandCenter(),
@@ -570,9 +570,9 @@ function colors(): ThemeUIColors {
     "sideBar.background": ui.bg1,
     "sideBarSectionHeader.background": ui.bg1,
     "sideBarSectionHeader.border": ui.border0,
-    "tree.indentGuidesStroke": alpha(ui.fg, 10),
+    "tree.indentGuidesStroke": alpha(ui.fg, 25),
     ...themeTabs(),
-    "pickerGroup.border": alpha(ui.border0, 50),
+    "pickerGroup.border": ui.border0,
     ...themeDiff(),
     ...themeMerge(),
     ...themeGit(),
@@ -589,7 +589,7 @@ function colors(): ThemeUIColors {
 function themeCommandCenter(): ThemeUIColors {
   return {
     "commandCenter.foreground": ui.fg,
-    "commandCenter.inactiveForeground": alpha(ui.fg, 50),
+    "commandCenter.inactiveForeground": ui.border1,
     "commandCenter.background": ui.bg1,
     "commandCenter.border": ui.border0,
     "commandCenter.inactiveBorder": ui.border0,
