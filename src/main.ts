@@ -67,6 +67,8 @@ const ui = {
   bg0: hsl(hue.bg, 50, 14),
   bg1: hsl(hue.bg, 50, 17),
 
+  shadow: transparent,
+
   fg: hsl(hue.bg, 70, 80),
 
   border0: hsl(hue.bg, 50, 25),
@@ -376,7 +378,7 @@ function themeHighlightBorders(): ThemeUIColors {
 
 function themeScrollbar(): ThemeUIColors {
   return {
-    "scrollbar.shadow": transparent,
+    "scrollbar.shadow": ui.shadow,
     "scrollbarSlider.background": alpha(ui.fg, 40),
     "scrollbarSlider.hoverBackground": alpha(ui.fg, 50),
     "scrollbarSlider.activeBackground": alpha(ui.fg, 60),
@@ -480,6 +482,8 @@ function themeEditor(): ThemeUIColors {
     "editorLineNumber.foreground": ui.border1,
     "editorLineNumber.activeForeground": ui.fg,
 
+    "editorStickyScroll.border": ui.border0,
+
     "editorCodeLens.foreground": syntax.alt0,
     "editorLightBulb.foreground": syntax.due1,
     "editorLightBulbAutoFix.foreground": syntax.due1,
@@ -540,7 +544,7 @@ function colors(): ThemeUIColors {
     "toolbar.hoverBackground": alpha(ui.border1, 20),
     "toolbar.activeBackground": alpha(ui.border1, 40),
     "widget.border": ui.border0,
-    "widget.shadow": ui.bg0,
+    "widget.shadow": ui.shadow,
     ...themeScrollbar(),
     "input.border": ui.border1,
     "input.background": ui.bg0,

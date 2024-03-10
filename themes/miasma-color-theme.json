@@ -90,6 +90,7 @@
     "editorLink.activeForeground": "#86acf9",
     "editorOverviewRuler.border": "#20604a40",
     "editorRuler.foreground": "#20604a80",
+    "editorStickyScroll.border": "#20604a",
     "editorSuggestWidget.background": "#12362a",
     "editorSuggestWidget.border": "#39ac86",
     "editorWidget.background": "#12362a",
@@ -229,7 +230,7 @@
     "toolbar.hoverBackground": "#39ac8633",
     "tree.indentGuidesStroke": "#a8f0d840",
     "widget.border": "#20604a",
-    "widget.shadow": "#12362a"
+    "widget.shadow": "#00000000"
   },
   "tokenColors": [
     {
