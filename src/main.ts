@@ -1,20 +1,31 @@
 // https://code.visualstudio.com/api/references/theme-color
 import fs from "fs";
-import { colord } from "./colord";
+import Color from "colorjs.io";
 import * as ANSI from "ansi-colors";
 import { ThemeUIColors } from "./types";
+// import { letsGoOKLCH } from "./convert-oklch";
 
 const transparent = "#00000000";
 
-// WCAG AA minimum contrast values
 // https://webaim.org/resources/contrastchecker/
+// https://www.myndex.com/APCA/
 const Contrast = {
-  text: 4.5,
-  ui: 3,
-  // Not a WCAG value
-  decoration: 1.25,
+  // TODO: Not really sure what values make the most sense here yet...
+  APCA: {
+    text: 45,
+    ui: 30,
+    decoration: 10,
+    // decoration: 15,
+  },
+  WCAG21: {
+    text: 4.5,
+    ui: 3,
+    // Not a WCAG value
+    decoration: 1.2,
+  },
 } as const;
-type ContrastLevel = keyof typeof Contrast;
+type ContrastAlgorithm = keyof typeof Contrast;
+type ContrastLevel = keyof (typeof Contrast)[ContrastAlgorithm];
 
 // Sort the JSON object so things always come out in the same order, and minor
 // refactoring doesn't cause the build files to change
@@ -46,76 +57,106 @@ interface TokenColor {
 }
 
 const hue = {
-  main: 170,
-  uno: 100,
-  due: 65,
-  tre: 330,
-} as const;
-
-const terminal = {
-  black: lch(35, 30, hue.main),
-  red: lch(70, 60, 20),
-  green: lch(70, 60, hue.main),
-  yellow: lch(70, 60, hue.due),
-  blue: lch(70, 60, 270),
-  magenta: lch(70, 60, hue.tre),
-  cyan: lch(70, 60, 200),
-  white: lch(94, 15, hue.uno),
+  bg: 160,
+  uno: 85,
+  due: 20,
+  tre: 320,
 } as const;
 
 const ui = {
-  bg0: lch(18, 14, hue.main),
-  bg1: lch(12, 14, hue.main),
+  bg0: hsl(hue.bg, 50, 14),
+  bg1: hsl(hue.bg, 50, 17),
 
-  fg: lch(90, 20, hue.main),
+  shadow: transparent,
 
-  border0: lch(30, 20, hue.main),
-  border1: lch(50, 30, hue.main),
+  fg: hsl(hue.bg, 70, 80),
 
-  bracket1: lch(65, 48, hue.uno),
-  bracket2: lch(65, 32, hue.due),
-  bracket3: lch(65, 31, hue.tre),
+  border0: hsl(hue.bg, 50, 25),
+  border1: hsl(hue.bg, 50, 45),
 
-  error: terminal.red,
+  link: hsl(hue.uno, 90, 50),
+
+  accent0: hsl(hue.tre, 90, 80),
+  accent1: hsl(hue.due, 90, 80),
+
+  bracket1: hsl(hue.uno, 40, 50),
+  bracket2: hsl(hue.due, 40, 60),
+  bracket3: hsl(hue.tre, 30, 65),
+
+  error: hsl(350, 80, 75),
 } as const;
 
 const syntax = {
-  default: ui.fg,
-  alt0: lch(61, 14, hue.main),
-  alt1: lch(61, 40, hue.main),
+  default: hsl(hue.bg, 60, 90),
 
-  uno0: lch(90, 30, hue.uno),
-  uno1: lch(80, 60, hue.uno),
+  alt0: hsl(hue.bg, 15, 60),
+  alt1: hsl(hue.bg, 40, 48),
 
-  due0: lch(90, 30, hue.due),
-  due1: lch(80, 50, hue.due),
-  due2: lch(70, 60, hue.due),
+  uno0: hsl(hue.uno, 80, 80),
+  uno1: hsl(hue.uno, 70, 60),
 
-  tre0: lch(90, 30, hue.tre),
-  tre1: lch(80, 50, hue.tre),
-  tre2: lch(70, 60, hue.tre),
+  due0: hsl(hue.due, 100, 90),
+  due1: hsl(hue.due, 90, 75),
+  due2: hsl(hue.due, 90, 60),
+
+  tre0: hsl(hue.tre, 100, 90),
+  tre1: hsl(hue.tre, 85, 80),
+  tre2: hsl(hue.tre, 90, 70),
+} as const;
+
+const terminal = {
+  black: hsl(hue.bg, 35, 25),
+  red: ui.error,
+  green: hsl(hue.uno, 90, 70),
+  yellow: hsl(hue.due, 80, 70),
+  blue: hsl(220, 90, 75),
+  magenta: hsl(290, 80, 75),
+  cyan: hsl(180, 90, 70),
+  white: hsl(hue.due, 30, 90),
 } as const;
 
 const diff = {
-  red: lch(30, 60, 20),
-  blue: lch(30, 60, 270),
+  red: hsl(340, 100, 30),
+  blue: hsl(220, 100, 30),
 } as const;
 
 const bg = {
-  orange: lch(40, 65, hue.due),
-  yellow: lch(40, 65, hue.uno),
+  orange: lch(40, 65, 65),
+  yellow: lch(40, 65, 100),
   blue: lch(40, 65, 270),
   purple: lch(40, 65, 330),
 } as const;
 
+/** Only use LCH for colors I don't care about as much. */
 function lch(l: number, c: number, h: number): string {
-  return colord({ l, c, h }).toHex();
+  return new Color("lch", [l, c, h]).to("srgb").toString({ format: "hex" });
 }
 
+/** Lovingly hand picked colors use HSL, at least until OKLCH is available. */
+function hsl(h: number, s: number, l: number): string {
+  return new Color("hsl", [h, s, l]).to("srgb").toString({ format: "hex" });
+}
+
+// function oklch(l: number, c: number, h: number): string {
+//   return new Color("oklch", [l, c, h]).to("srgb").toString({ format: "hex" });
+// }
+
+// letsGoOKLCH({
+//   ui,
+//   syntax,
+//   terminal,
+//   diff,
+//   bg,
+// });
+
+/**
+ * This isn't a great practice, but VS Code forces us to use transparent colors
+ * in certain scenarios. Limit this to those, please.
+ */
 function alpha(color: string, percent: number): string {
-  const rgb = colord(color).toRgb();
-  rgb.a = percent / 100;
-  return colord(rgb).toHex();
+  const rgb = new Color(color);
+  rgb.alpha = percent / 100;
+  return rgb.toString({ format: "hex" });
 }
 
 function config(): {
@@ -137,12 +178,17 @@ function themeActivityBar(): ThemeUIColors {
   return {
     "activityBar.border": ui.border0,
     "activityBar.background": ui.bg1,
-    "activityBar.foreground": syntax.tre2,
+    "activityBar.foreground": ui.accent0,
     "activityBar.inactiveForeground": ui.fg,
-    "activityBarBadge.background": syntax.due1,
+    "activityBarBadge.background": ui.accent1,
     "activityBarBadge.foreground": ui.bg0,
-    "activityBar.activeBorder": syntax.tre2,
+    "activityBar.activeBorder": ui.accent0,
     "activityBar.activeBackground": transparent,
+
+    "activityBarTop.activeBorder": ui.accent0,
+    "activityBarTop.dropBorder": ui.accent0,
+    "activityBarTop.foreground": ui.accent0,
+    "activityBarTop.inactiveForeground": ui.fg,
   };
 }
 
@@ -165,7 +211,7 @@ function themeList(): ThemeUIColors {
 
     "list.errorForeground": terminal.red,
     "list.warningForeground": terminal.yellow,
-    "list.highlightForeground": syntax.tre1,
+    "list.highlightForeground": ui.accent0,
 
     "list.focusForeground": ui.fg,
     "list.focusHighlightForeground": ui.bg0,
@@ -182,14 +228,14 @@ function themeList(): ThemeUIColors {
     "quickInputList.focusForeground": ui.bg0,
     "quickInputList.focusBackground": ui.fg,
 
-    "list.hoverBackground": alpha(ui.border1, 25),
+    "list.hoverBackground": alpha(ui.border1, 15),
   };
 }
 
 function themeWelcome(): ThemeUIColors {
   return {
-    "textLink.foreground": syntax.tre1,
-    "textLink.activeForeground": syntax.tre0,
+    "textLink.foreground": ui.link,
+    "textLink.activeForeground": ui.link,
     "textBlockQuote.background": transparent,
     "textBlockQuote.border": syntax.default,
     "textPreformat.foreground": syntax.due1,
@@ -210,8 +256,8 @@ function themeSettings(): ThemeUIColors {
 
 function themeTerminal(): ThemeUIColors {
   return {
-    "terminal.foreground": ui.fg,
-    "terminal.background": ui.bg1,
+    "terminal.foreground": syntax.default,
+    "terminal.background": ui.bg0,
     "terminal.ansiBlack": terminal.black,
     "terminal.ansiBlue": terminal.blue,
     "terminal.ansiBrightBlack": terminal.black,
@@ -282,6 +328,10 @@ function themeStatusBar(): ThemeUIColors {
     "statusBar.border": ui.border0,
     "statusBarItem.activeBackground": alpha(ui.border1, 40),
     "statusBarItem.hoverBackground": alpha(ui.border1, 20),
+    "statusBarItem.remoteForeground": ui.fg,
+    "statusBarItem.remoteBackground": ui.bg1,
+    "statusBarItem.remoteHoverForeground": ui.fg,
+    "statusBarItem.remoteHoverBackground": alpha(ui.border1, 20),
     "statusBar.background": ui.bg1,
     "statusBar.debuggingBackground": ui.bg1,
     "statusBar.noFolderBackground": ui.bg1,
@@ -292,7 +342,7 @@ function themeStatusBar(): ThemeUIColors {
 function themeBadge(): ThemeUIColors {
   return {
     "badge.foreground": ui.bg0,
-    "badge.background": syntax.due1,
+    "badge.background": ui.accent1,
   };
 }
 
@@ -328,10 +378,10 @@ function themeHighlightBorders(): ThemeUIColors {
 
 function themeScrollbar(): ThemeUIColors {
   return {
-    "scrollbar.shadow": transparent,
-    "scrollbarSlider.background": alpha(ui.border1, 40),
-    "scrollbarSlider.hoverBackground": alpha(ui.border1, 50),
-    "scrollbarSlider.activeBackground": alpha(ui.border1, 60),
+    "scrollbar.shadow": ui.shadow,
+    "scrollbarSlider.background": alpha(ui.fg, 40),
+    "scrollbarSlider.hoverBackground": alpha(ui.fg, 50),
+    "scrollbarSlider.activeBackground": alpha(ui.fg, 60),
   };
 }
 
@@ -408,7 +458,7 @@ function themeEditor(): ThemeUIColors {
     "editorWidget.foreground": ui.fg,
     "editorWidget.background": ui.bg0,
     "editorWidget.border": ui.border1,
-    "editorWidget.resizeBorder": ui.border1,
+    "editorWidget.resizeBorder": ui.bg0,
     "editorBracketMatch.background": alpha(syntax.due2, 15),
     "editorBracketMatch.border": alpha(syntax.due2, 50),
     "editor.findMatchBackground": alpha(bg.orange, 50),
@@ -425,21 +475,23 @@ function themeEditor(): ThemeUIColors {
     "editor.wordHighlightBackground": alpha(bg.blue, 50),
     "editor.wordHighlightStrongBackground": alpha(bg.purple, 50),
     "editorOverviewRuler.border": alpha(ui.border0, 25),
-    "editorCursor.foreground": syntax.tre1,
+    "editorCursor.foreground": ui.accent0,
     "editorGroup.border": ui.border0,
-    "editorIndentGuide.background": alpha(ui.border0, 50),
-    "editorIndentGuide.activeBackground": ui.border0,
+    "editorIndentGuide.background1": alpha(ui.fg, 10),
+    "editorIndentGuide.activeBackground1": alpha(ui.fg, 50),
     "editorLineNumber.foreground": ui.border1,
     "editorLineNumber.activeForeground": ui.fg,
 
+    "editorStickyScroll.border": ui.border0,
+
     "editorCodeLens.foreground": syntax.alt0,
-    "editorLightBulb.foreground": syntax.uno1,
+    "editorLightBulb.foreground": syntax.due1,
     "editorLightBulbAutoFix.foreground": syntax.due1,
 
     "editorRuler.foreground": alpha(ui.border0, 50),
 
-    "editorSuggestWidget.background": ui.bg1,
-    "editorHoverWidget.background": ui.bg1,
+    "editorSuggestWidget.background": ui.bg0,
+    "editorHoverWidget.background": ui.bg0,
     "editorSuggestWidget.border": ui.border1,
     "editorHoverWidget.border": ui.border1,
 
@@ -459,7 +511,7 @@ function themeTitlebar(): ThemeUIColors {
     "titleBar.activeBackground": ui.bg1,
     "titleBar.activeForeground": ui.fg,
     "titleBar.inactiveBackground": ui.bg1,
-    "titleBar.inactiveForeground": alpha(ui.fg, 70),
+    "titleBar.inactiveForeground": ui.border1,
     "titleBar.border": ui.border0,
   };
 }
@@ -474,29 +526,29 @@ function themeTabs(): ThemeUIColors {
     "editorGroupHeader.tabsBackground": ui.bg1,
     "tab.activeBorder": ui.border0,
     "tab.unfocusedActiveBorder": ui.border0,
-    "tab.activeBorderTop": syntax.tre2,
-    "tab.unfocusedActiveBorderTop": syntax.tre2,
+    "tab.activeBorderTop": ui.accent0,
+    "tab.unfocusedActiveBorderTop": ui.accent0,
     "tab.activeBackground": ui.bg0,
-    "tab.activeForeground": ui.fg,
+    "tab.activeForeground": syntax.default,
     "tab.inactiveBackground": ui.bg1,
-    "tab.inactiveForeground": alpha(ui.fg, 80),
+    "tab.inactiveForeground": ui.fg,
   };
 }
 
 function colors(): ThemeUIColors {
   return {
-    focusBorder: syntax.tre1,
+    focusBorder: ui.accent0,
     errorForeground: terminal.red,
-    disabledForeground: alpha(ui.fg, 50),
+    disabledForeground: ui.border1,
     "icon.foreground": ui.fg,
-    "toolbar.hoverBackground": alpha(ui.border1, 30),
-    "toolbar.activeBackground": alpha(ui.border1, 50),
+    "toolbar.hoverBackground": alpha(ui.border1, 20),
+    "toolbar.activeBackground": alpha(ui.border1, 40),
     "widget.border": ui.border0,
-    "widget.shadow": ui.bg1,
+    "widget.shadow": ui.shadow,
     ...themeScrollbar(),
     "input.border": ui.border1,
     "input.background": ui.bg0,
-    "input.placeholderForeground": alpha(ui.fg, 40),
+    "input.placeholderForeground": ui.border1,
     "progressBar.background": ui.fg,
     "inputOption.activeBorder": ui.fg,
     ...themeCommandCenter(),
@@ -513,18 +565,18 @@ function colors(): ThemeUIColors {
     ...themeDragAndDrop(),
     ...themeButton(),
     foreground: ui.fg,
-    "panel.background": ui.bg1,
+    "panel.background": ui.bg0,
     "panel.border": ui.border0,
-    "panelTitle.activeBorder": syntax.tre1,
-    "panelTitle.activeForeground": syntax.tre1,
+    "panelTitle.activeBorder": ui.accent0,
+    "panelTitle.activeForeground": ui.accent0,
     "panelTitle.inactiveForeground": ui.fg,
     "sideBar.border": ui.border0,
     "sideBar.background": ui.bg1,
     "sideBarSectionHeader.background": ui.bg1,
     "sideBarSectionHeader.border": ui.border0,
-    "tree.indentGuidesStroke": alpha(ui.border0, 50),
+    "tree.indentGuidesStroke": alpha(ui.fg, 25),
     ...themeTabs(),
-    "pickerGroup.border": alpha(ui.border0, 50),
+    "pickerGroup.border": ui.border0,
     ...themeDiff(),
     ...themeMerge(),
     ...themeGit(),
@@ -541,7 +593,7 @@ function colors(): ThemeUIColors {
 function themeCommandCenter(): ThemeUIColors {
   return {
     "commandCenter.foreground": ui.fg,
-    "commandCenter.inactiveForeground": alpha(ui.fg, 50),
+    "commandCenter.inactiveForeground": ui.border1,
     "commandCenter.background": ui.bg1,
     "commandCenter.border": ui.border0,
     "commandCenter.inactiveBorder": ui.border0,
@@ -1042,6 +1094,8 @@ function tokenColors(): TokenColor[] {
   ];
 }
 
+const contrastErrors: string[] = [];
+
 function showContrast(
   level: ContrastLevel,
   fg: string,
@@ -1049,19 +1103,27 @@ function showContrast(
   fgStr: string,
   bgStr: string
 ): void {
-  const contrast = colord(fg).contrast(bg);
-  const fail = contrast < Contrast[level];
+  // const algorithm = "APCA";
+  const algorithm = "WCAG21";
+  const contrast = new Color(fg).contrast(bg, algorithm);
+  const target = Contrast[algorithm][level];
+  const fail = contrast < target;
+  const failBadge = "[!]";
+  const noBadge = " ".repeat(failBadge.length);
   const str = [
-    fail ? "[!]" : "   ",
-    ANSI.bold.yellow(contrast.toFixed(1).toString().padStart(4)),
-    ANSI.bold.magenta("::"),
+    fail ? failBadge : noBadge,
+    ANSI.yellow(contrast.toFixed(2).toString().padStart(5)),
+    ANSI.cyan("<"),
+    ANSI.yellow(String(target).padStart(4)),
+    ANSI.cyan("::"),
     bgStr,
-    ANSI.bold.magenta("<-"),
+    ANSI.cyan("<-"),
     fgStr,
   ].join(" ");
   if (fail) {
-    console.error(ANSI.bold.red(str));
-    process.exit(1);
+    const msg = ANSI.bold.red(str);
+    console.error(msg);
+    contrastErrors.push(msg);
   } else {
     console.log(str);
   }
@@ -1075,8 +1137,15 @@ function save(): void {
 
 function printContrastReport(): void {
   showContrast("text", ui.error, ui.bg0, "ui.error", "ui.bg0");
+  showContrast("text", ui.error, ui.bg1, "ui.error", "ui.bg1");
   showContrast("text", ui.fg, ui.bg0, "ui.fg", "ui.bg0");
   showContrast("text", ui.fg, ui.bg1, "ui.fg", "ui.bg1");
+  showContrast("text", ui.link, ui.bg0, "ui.accent0", "ui.bg0");
+  showContrast("text", ui.link, ui.bg1, "ui.accent0", "ui.bg1");
+  showContrast("text", ui.accent0, ui.bg0, "ui.accent1", "ui.bg0");
+  showContrast("text", ui.accent0, ui.bg1, "ui.accent1", "ui.bg1");
+  showContrast("text", ui.accent1, ui.bg0, "ui.accent2", "ui.bg0");
+  showContrast("text", ui.accent1, ui.bg1, "ui.accent2", "ui.bg1");
   showContrast("decoration", ui.border0, ui.bg0, "ui.border0", "ui.bg0");
   showContrast("decoration", ui.border0, ui.bg1, "ui.border0", "ui.bg1");
   showContrast(
@@ -1159,10 +1228,18 @@ function printContrastReport(): void {
       continue;
     }
     showContrast("text", color, ui.bg0, `terminal.${name}`, "ui.bg0");
+    showContrast("text", color, ui.bg1, `terminal.${name}`, "ui.bg1");
   }
   showContrast("text", ui.bracket1, ui.bg0, "ui.bracket1", "ui.bg0");
   showContrast("text", ui.bracket2, ui.bg0, "ui.bracket2", "ui.bg0");
   showContrast("text", ui.bracket3, ui.bg0, "ui.bracket3", "ui.bg0");
+  if (contrastErrors.length > 0) {
+    console.error(ANSI.bold.red("\n>>> CONTRAST FAILURE\n"));
+    for (const error of contrastErrors) {
+      console.error(error);
+    }
+    process.exit(1);
+  }
 }
 
 save();
